@@ -13,7 +13,6 @@ const rootState = {
   counter: 10,
   users: []
 };
-
 //reducers
 const userReducer = (state = rootState, action) => {
   switch (action.type) {
@@ -33,35 +32,8 @@ export const usersEpic = (action$, store) => {
       .flatMap(d => {
         return most.from([{ type: "UPDATE_USERS", payload: d.results }]);
       })
+      .recoverWith(e => most.of({ type: "ERROR" }))
   );
-};
-
-const epicMiddleware = createEpicMiddleware(usersEpic);
-const composeEnhancers =
-  (typeof window !== "undefined" &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
-  compose;
-
-const storeEnhancers = composeEnhancers(
-  createStateStreamEnhancer(epicMiddleware)
-);
-
-const store = createStore(userReducer, storeEnhancers);
-
-const mapStateToProps = (state, ownProps) => {
-  return { count: state.counter };
-};
-
-//action
-
-const fetchUser = () => {
-  return { type: "FETCH_USER_LOAD" };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchUser: () => dispatch(fetchUser())
-  };
 };
 
 const UserProfile = ({ user }) => {
@@ -74,6 +46,22 @@ const UserProfile = ({ user }) => {
     </>
   );
 };
+
+//action
+const fetchUser = () => {
+  return { type: "FETCH_USER_LOAD" };
+};
+
+const mapStateToProps = (state, ownProps) => {
+  return { count: state.counter };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchUser: () => dispatch(fetchUser())
+  };
+};
+
 const User = props => {
   const users = useSelector(state => state.users);
 
@@ -96,6 +84,19 @@ function App() {
     </div>
   );
 }
+
+// SETUP
+const epicMiddleware = createEpicMiddleware(usersEpic);
+const composeEnhancers =
+  (typeof window !== "undefined" &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
+
+const storeEnhancers = composeEnhancers(
+  createStateStreamEnhancer(epicMiddleware)
+);
+
+const store = createStore(userReducer, storeEnhancers);
 
 export default () => (
   <Provider store={store}>
