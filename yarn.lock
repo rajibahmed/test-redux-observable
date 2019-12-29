@@ -8593,11 +8593,6 @@ redux-most@^0.8.0:
   dependencies:
     most-subject "^5.3.0"
 
-redux-observable@^1.2.0:
-  version "1.2.0"
-  resolved "https://artifactory.klarna.net/artifactory/api/npm/v-npm-production/redux-observable/-/redux-observable-1.2.0.tgz#ff51b6c6be2598e9b5e89fc36639186bb0e669c7"
-  integrity sha1-/1G2xr4lmOm16J/DZjkYa7Dmacc=
-
 redux@^4.0.5:
   version "4.0.5"
   resolved "https://artifactory.klarna.net/artifactory/api/npm/v-npm-production/redux/-/redux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
